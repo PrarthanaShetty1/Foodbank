@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FoodBank</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="your_details_will_be_public_to_the_community_by_using_this_app_you_also_need_to_pledge_to_be_a_donor_to_help_those_who_are_in_need">Your Details will be public to the community, by using this app you also need to pledge to be a donor to help those who are in need.</string>
+    <string name="sign_up"><u>Sign Up</u>></string>
+    <string name="choose_image"><u>Choose Image</u></string>
+</resources>
