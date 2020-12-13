@@ -35,4 +35,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
     implementation 'androidx.preference:preference:1.1.0'
+    implementation 'gun0912.ted:tedpermission:2.2.3'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 }

@@ -4,11 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.DocumentsContract;
+import android.provider.DocumentsContract; 
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -44,13 +45,14 @@ public class MakeRequestActivity extends AppCompatActivity {
 
     EditText messageText;
     TextView chooseImageText;
-    TextView chooseImg;
     ImageView postImage;
-    ImageView image;
     Button submit_button;
     Uri imageUri;
-
+    Uri imageUri1;
+    private ImageView imageView;
+    private static final int CAMERA_REQUEST = 1888;
     private static final int REQUEST_IMAGE_CAPTURE = 101;
+
 
 
     @Override
@@ -60,10 +62,18 @@ public class MakeRequestActivity extends AppCompatActivity {
         AndroidNetworking.initialize(getApplicationContext());
         messageText = findViewById(R.id.message);
         chooseImageText = findViewById(R.id.choose_image);
-        //chooseImg= findViewById(R.id.choose_img);
         postImage = findViewById(R.id.post_image);
-        //image=findViewById(R.id.imageview);
         submit_button = findViewById(R.id.submit_button);
+        imageView = (ImageView) this.findViewById(R.id.imageView1);
+        Button photoButton = (Button) this.findViewById(R.id.button1);
+        photoButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        });
         submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,14 +84,6 @@ public class MakeRequestActivity extends AppCompatActivity {
         });
 
         chooseImageText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                permission();
-                //code to pick image
-
-            }
-        });
-        chooseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 permission();
@@ -144,6 +146,7 @@ public class MakeRequestActivity extends AppCompatActivity {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
+
                         try {
                             if(response.getBoolean("success")){
                                 showmessage("Successful");
@@ -170,10 +173,17 @@ public class MakeRequestActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 101 && resultCode == RESULT_OK){
-            if(data!=null){
+            if(data!=null) {
                 imageUri = data.getData();
                 Glide.with(getApplicationContext()).load(imageUri).into(postImage);
             }
+        }
+        if (requestCode == CAMERA_REQUEST) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(photo);
+            imageUri1 = data.getData();
+            Glide.with(getApplicationContext()).load(imageUri1).into(imageView);
+
         }
     }
 
@@ -182,11 +192,13 @@ public class MakeRequestActivity extends AppCompatActivity {
         if (messageText.getText().toString().isEmpty()) {
             showmessage("Message shouldn't be empty");
             return false;
-        }else if(imageUri==null){
-            showmessage("Pick Image");
+        }
+        else if(imageUri==null) {
+            showmessage("Successful");
             return false;
         }
         return true;
+
     }
 
 
